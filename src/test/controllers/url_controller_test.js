@@ -42,7 +42,7 @@ describe('URL controller', () => {
       request(app)
         .get(`/new/${encodeURIComponent('https://www.google.com')}`)
         .end((err, response) => {
-          assert(response.body.url === 'https://www.google.com');
+          assert(response.body.original_url === 'https://www.google.com');
           done();
         });
     });
@@ -52,7 +52,9 @@ describe('URL controller', () => {
     request(app)
       .get(`/new/${encodeURIComponent('http://www.google.com')}`)
       .end((err, response) => {
-        assert(response.body.url.startsWith('http://'));
+        assert(response.body.original_url.startsWith('http://'));
+        assert(response.body.original_url === 'http://www.google.com');
+        assert(response.body.short_url.startsWith('https://link.mycodebytes.com/'));
         done();
       });
   });
@@ -61,7 +63,9 @@ describe('URL controller', () => {
     request(app)
       .get(`/new/${encodeURIComponent('https://www.google.com')}`)
       .end((err, response) => {
-        assert(response.body.url.startsWith('https://'));
+        assert(response.body.original_url.startsWith('https://'));
+        assert(response.body.original_url === 'https://www.google.com');
+        assert(response.body.short_url.startsWith('https://link.mycodebytes.com/'));
         done();
       });
   });
@@ -70,7 +74,9 @@ describe('URL controller', () => {
     request(app)
       .get(`/new/${encodeURIComponent('https://www.google.com:1337/example-path/')}`)
       .end((err, response) => {
-        assert(response.body.url.includes(':1337'));
+        assert(response.body.original_url.includes(':1337'));
+        assert(response.body.original_url === 'https://www.google.com:1337/example-path/');
+        assert(response.body.short_url.startsWith('https://link.mycodebytes.com/'));
         done();
       });
   });

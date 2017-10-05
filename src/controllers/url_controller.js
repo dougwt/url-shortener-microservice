@@ -15,7 +15,10 @@ module.exports = {
     }
 
     Url.create({ url })
-      .then(record => res.send(record))
+      .then(record => res.send({
+        original_url: record.url,
+        short_url: `https://link.mycodebytes.com/${record._id}`
+      }))
       .catch((error) => {
 
         if(error.code === 11000) {
@@ -24,7 +27,10 @@ module.exports = {
               if(err) {
                 throw err;
               } else {
-                res.send(record);
+                res.send({
+                  original_url: record.url,
+                  short_url: `https://link.mycodebytes.com/${record._id}`
+                });
               }
             });
         } else {
