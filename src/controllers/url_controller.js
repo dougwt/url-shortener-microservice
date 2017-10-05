@@ -3,7 +3,7 @@ const Url = require('../models/url');
 
 module.exports = {
   create(req, res, next) {
-    const url = decodeURIComponent(req.params.url);
+    const url = decodeURIComponent(req.params[0]);
     console.log(`Processing ${url}`);
 
     if (!validUrl.isUri(url)) {
@@ -33,4 +33,23 @@ module.exports = {
         }
       });
   },
+
+  redirect(req, res, next) {
+    Url.findById(req.params.id)
+      .then(record => {
+        if (record) {
+          res.redirect(record.url)
+        } else {
+          res.status(404).send('404: Page not Found');
+        }
+      })
+      .catch((error) => {
+        if (error.name === 'CastError' && error.kind === 'ObjectId') {
+          res.status(404).send('404: Page not Found');
+        } else {
+          console.log('ERROR:', error);
+          next();
+        }
+      });
+  }
 };

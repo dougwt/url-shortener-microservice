@@ -10,12 +10,13 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 // Middleware
-// app.use(function(req, res, next) {
-//   console.log('Request URL:', req.url);
-//   next();
-// });
+app.use(function(req, res, next) {
+  console.log('Request URL:', decodeURIComponent(req.url));
+  next();
+});
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/new/:url', UrlController.create);
+app.get('/new/*', UrlController.create);
+app.get('/:id', UrlController.redirect);
 
 module.exports = app;
