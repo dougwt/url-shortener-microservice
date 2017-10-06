@@ -16,3 +16,8 @@ beforeEach(done => {
     .then(() => done())
     .catch(() => done());
 });
+
+after(done => {
+  mongoose.disconnect();
+  done();
+});

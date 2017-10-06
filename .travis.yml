@@ -12,7 +12,7 @@ after_success:
 - eval `ssh-agent -s`
 - chmod 600 .travis/deployment_id_rsa
 - ssh-add .travis/deployment_id_rsa
-- git remote add web https://dougwt@git.mycodebytes.com/url_shortener.git
+- git remote add web ssh://dougwt@dougwt.webfactional.com:/home/dougwt/webapps/git/repos/url-shortener.git
 - echo "Pushing '$TRAVIS_BRANCH' changes to https://link.myuserstories.com"
 - git push web $TRAVIS_BRANCH --force
 before_script:
