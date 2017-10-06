@@ -6,7 +6,10 @@ const app = express();
 
 mongoose.Promise = global.Promise;
 if (process.env.NODE_ENV !== 'test') {
-  mongoose.connect('mongodb://localhost/url', { useMongoClient: true });
+  const MONGO_CONNECTION = process.env.MONGO_CONNECTION || 'mongodb://localhost/url';
+  mongoose.connect(MONGO_CONNECTION, { useMongoClient: true }, (error) => {
+    if (error) throw error;
+  });
 }
 
 // Middleware
