@@ -1,0 +1,22 @@
+language: node_js
+node_js:
+- node
+cache:
+  directories:
+  - node_modules
+services:
+- mongodb
+script:
+- npm run-script test-travis
+after_success:
+- eval `ssh-agent -s`
+- chmod 600 .travis/deployment_id_rsa
+- ssh-add .travis/deployment_id_rsa
+- git remote add web https://dougwt@git.mycodebytes.com/url_shortener.git
+- echo "Pushing '$TRAVIS_BRANCH' changes to https://link.myuserstories.com"
+- git push web $TRAVIS_BRANCH --force
+before_script:
+- echo -e "Host dougwt.webfactional.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+before_install:
+- openssl aes-256-cbc -K $encrypted_520b8ddb5303_key -iv $encrypted_520b8ddb5303_iv
+  -in .travis/deployment_id_rsa.enc -out .travis/deployment_id_rsa -d
