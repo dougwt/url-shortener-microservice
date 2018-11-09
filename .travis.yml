@@ -8,18 +8,3 @@ services:
   - mongodb
 script:
   - npm run-script test-travis
-before_deploy:
-  - npm install now --no-save # Install Now CLI on Travis
-deploy:
-  - provider: script
-    script:
-      - now --token $NOW_TOKEN
-    skip_cleanup: true
-    on:
-      all_branches: true
-      master: false
-  - provider: script
-    script: now --token $NOW_TOKEN && now alias --token $NOW_TOKEN link.mycodebytes.com
-    skip_cleanup: true
-    on:
-      branch: master
